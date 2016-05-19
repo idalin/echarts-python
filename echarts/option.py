@@ -1,4 +1,11 @@
-#coding: utf-8
+# -*- coding: utf-8 -*-
+
+"""
+    echarts.option
+    ~~~~~~~~~~~~~~
+
+    Options for chart
+"""
 
 import json
 
@@ -52,6 +59,7 @@ class Axis(Base):
 
 class Legend(Base):
     """Legend section for Echart."""
+
     def __init__(self, data, orient='horizontal', position=None, **kwargs):
         self.data = data
 
@@ -79,6 +87,7 @@ class Legend(Base):
 
 class Tooltip(Base):
     """A tooltip when hovering."""
+
     def __init__(self, trigger='axis', **kwargs):
         assert trigger in ('axis', 'item')
         self.trigger = trigger
@@ -87,6 +96,7 @@ class Tooltip(Base):
 
     @property
     def json(self):
+        """JSON format data."""
         json = {
             'trigger': self.trigger,
         }
@@ -96,10 +106,13 @@ class Tooltip(Base):
 
 
 class Series(Base):
+    """ Data series holding. """
     def __init__(self, type, name=None, data=None, **kwargs):
         types = (
-            'line', 'bar', 'scatter', 'k', 'pie', 'radar',
-            'chord', 'force', 'map'
+            'bar', 'boxplot', 'candlestick', 'chord', 'effectScatter',
+            'eventRiver', 'force', 'funnel', 'gauge', 'graph', 'heatmap',
+            'k', 'line', 'lines', 'map', 'parallel', 'pie', 'radar',
+            'sankey', 'scatter', 'tree', 'treemap', 'venn', 'wordCloud'
         )
         assert type in types
         self.type = type
@@ -109,6 +122,7 @@ class Series(Base):
 
     @property
     def json(self):
+        """JSON format data."""
         json = {
             'type': self.type,
             'data': self.data
@@ -121,9 +135,9 @@ class Series(Base):
 
 
 class Toolbox(Base):
-    def __init__(self, show='true', orient='horizontal', position=None, **kwargs):
-        assert show in ('true', 'false')
-        self.show = show
+    """ A toolbox for visitor. """
+
+    def __init__(self, orient='horizontal', position=None, **kwargs):
         assert orient in ('horizontal', 'vertical')
         self.orient = orient
         if not position:
@@ -133,13 +147,12 @@ class Toolbox(Base):
 
     @property
     def json(self):
+        """JSON format data."""
         json = {
-            'show': self.show,
             'orient': self.orient,
             'x': self.position[0],
             'y': self.position[1]
         }
-
         if self._kwargs:
             json.update(self._kwargs)
         return json
